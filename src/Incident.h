@@ -25,6 +25,10 @@ class Incident {
     float alpha;
     int life;
     
+    float radInc;
+    float alphaDec;
+    float lifeDec;
+    
     private:
 };
 

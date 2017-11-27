@@ -33,11 +33,43 @@ void ofApp::setup(){
         if(x < min_x && x!=0) min_x = x;
         if(y < min_y && y!=0) min_y = y;
     }
+    
+    gui.setup("gui", "settings.xml");
+    gui.add(alphaDec.set("alphaDec", 0.1, 0.1, 10));
+    gui.add(radInc.set("rad inc", 1.0, 0.5, 5.0));
+    gui.add(cadence.set("cadence", 10, 1, 100));
+    gui.add(lifeDec.set("lifeDec", 1.0, 1.0, 100.0));
+    gui.setPosition(10,10);
+    gui.loadFromFile("settings.xml");
+    
+    
+    
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
-    for(Incident i: incidents) {
+    
+    if(ofGetFrameNum() % cadence == 0) {
+        
+        float x = ofMap(csv[incidentIndex].getFloat(csv[incidentIndex].size() - 2), min_x, max_x, 0, ofGetWindowWidth());
+        float y = ofMap(csv[incidentIndex].getFloat(csv[incidentIndex].size() - 1), min_y, max_y, 0, ofGetWindowHeight());
+        if(x < ofGetWindowWidth() && x > 0 && y < ofGetWindowHeight() && y > 0) {
+            Incident temp;
+            temp.setup(x, y);
+            incidents.push_front(temp);
+            //            incidentIndex++;
+            
+        }
+        incidentIndex++;
+    }
+
+    if(incidents.size() > 0 && incidents[incidents.size() - 1].readyToDie()) incidents.pop_back();
+    
+    for(auto& i: incidents) {
+        
+        i.radInc = radInc;
+        i.alphaDec = alphaDec;
+        i.lifeDec = lifeDec;
         i.update();
     }
 }
@@ -46,25 +78,13 @@ void ofApp::update(){
 void ofApp::draw(){
     ofSetBackgroundColor(0, 0, 0);
     ofSetColor(255);
-    if(ofGetFrameNum() % 10 == 0) {
-        
-        float x = ofMap(csv[incidentIndex].getFloat(csv[incidentIndex].size() - 2), min_x, max_x, 0, ofGetWindowWidth());
-        float y = ofMap(csv[incidentIndex].getFloat(csv[incidentIndex].size() - 1), min_y, max_y, 0, ofGetWindowHeight());
-        if(x < ofGetWindowWidth() && x > 0 && y < ofGetWindowHeight() && y > 0) {
-            Incident temp;
-            temp.setup(x, y);
-            incidents.push_front(temp);
-//            incidentIndex++;
     
-        }
-         incidentIndex++;
-    }
-    
-    for(auto i: incidents) {
+    for(auto& i: incidents) {
         i.display();
     }
     
-    if(incidents.size() > 0 && incidents[incidents.size() - 1].readyToDie()) incidents.pop_back();
+    gui.draw();
+    
 }
 
 //--------------------------------------------------------------

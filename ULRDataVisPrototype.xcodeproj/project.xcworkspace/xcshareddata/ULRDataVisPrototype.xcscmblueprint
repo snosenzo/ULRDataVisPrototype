@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "F15CF841DD9FB05D4321D52FCD3C55C35136DD79",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "F15CF841DD9FB05D4321D52FCD3C55C35136DD79" : 9223372036854775807,
+    "124CCB9B44A9FE82887AA6F64CCD17FE54B342A7" : 9223372036854775807
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "6F70BAF3-F1D4-444E-9506-44A936CFD50F",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "F15CF841DD9FB05D4321D52FCD3C55C35136DD79" : "ULRDataVisPrototype\/",
+    "124CCB9B44A9FE82887AA6F64CCD17FE54B342A7" : "..\/..\/addons\/ofxCsv"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "ULRDataVisPrototype",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ULRDataVisPrototype.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/paulvollmer\/ofxCsv.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "124CCB9B44A9FE82887AA6F64CCD17FE54B342A7"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/snosenzo\/ULRDataVisPrototype.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F15CF841DD9FB05D4321D52FCD3C55C35136DD79"
+    }
+  ]
+}

@@ -27,14 +27,14 @@ bool Incident::readyToDie() {
 }
 
 void Incident::update() {
-    
+    life -= lifeDec;
+    radius += radInc;
+    alpha -= alphaDec;
     
 }
 
 void Incident::display(){
-    life--;
-    radius++;
-    alpha-=.4;
+    
     ofSetColor(255, alpha);
     ofDrawEllipse(x, y, radius*2, radius*2);
 }

@@ -3,6 +3,7 @@
 #include "ofMain.h"
 #include "Incident.h"
 #include "ofxCsv.h"
+#include "ofxGui.h"
 
 class ofApp : public ofBaseApp{
 
@@ -32,6 +33,12 @@ class ofApp : public ofBaseApp{
     float min_x;
     float min_y;
     deque<Incident> incidents;
+    
+    ofxPanel gui;
+    ofParameter<float> alphaDec;
+    ofParameter<float> radInc;
+    ofParameter<int> cadence;
+    ofParameter<float> lifeDec;
     
 		
 };
