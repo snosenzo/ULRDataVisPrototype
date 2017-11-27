@@ -4,6 +4,7 @@
 #include "Incident.h"
 #include "ofxCsv.h"
 #include "ofxGui.h"
+#include "ofxSyphon.h"
 
 class ofApp : public ofBaseApp{
 
@@ -39,6 +40,9 @@ class ofApp : public ofBaseApp{
     ofParameter<float> radInc;
     ofParameter<int> cadence;
     ofParameter<float> lifeDec;
+    
+    ofxSyphonServer syphon;
+    ofFbo fbo;
     
 		
 };

@@ -4,6 +4,7 @@
 void ofApp::setup(){
     
     ofSetLogLevel("ofxCsv", OF_LOG_VERBOSE);
+    ofSetCircleResolution(100);
     
     if(csv.load("policedata.csv")) {
         //csv.trim(); // Trim leading/trailing whitespace from non-quoted fields.
@@ -35,13 +36,15 @@ void ofApp::setup(){
     }
     
     gui.setup("gui", "settings.xml");
-    gui.add(alphaDec.set("alphaDec", 0.1, 0.1, 10));
-    gui.add(radInc.set("rad inc", 1.0, 0.5, 5.0));
+    gui.add(alphaDec.set("alphaDec", 0.1, 0.1, 1));
+    gui.add(radInc.set("rad inc", 1.0, 0.1, 5.0));
     gui.add(cadence.set("cadence", 10, 1, 100));
-    gui.add(lifeDec.set("lifeDec", 1.0, 1.0, 100.0));
     gui.setPosition(10,10);
     gui.loadFromFile("settings.xml");
     
+    
+    syphon.setName("lawfirm_output");
+    fbo.allocate(ofGetWidth(), ofGetHeight());
     
     
 }
@@ -79,9 +82,18 @@ void ofApp::draw(){
     ofSetBackgroundColor(0, 0, 0);
     ofSetColor(255);
     
+    fbo.begin();
+    ofClear(0,0,0,0);
+    
     for(auto& i: incidents) {
         i.display();
     }
+    
+    fbo.end();
+    syphon.publishTexture(&fbo.getTexture());
+    
+    ofSetColor(255,255);
+    fbo.draw(0,0);
     
     gui.draw();
     

@@ -23,7 +23,7 @@ class Incident {
     float y;
     float radius;
     float alpha;
-    int life;
+    float life;
     
     float radInc;
     float alphaDec;

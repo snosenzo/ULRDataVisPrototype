@@ -5,12 +5,14 @@
   },
   "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
     "F15CF841DD9FB05D4321D52FCD3C55C35136DD79" : 9223372036854775807,
-    "124CCB9B44A9FE82887AA6F64CCD17FE54B342A7" : 9223372036854775807
+    "124CCB9B44A9FE82887AA6F64CCD17FE54B342A7" : 9223372036854775807,
+    "F4CCB893AFADB97238A965FD2F28717F1CAAE613" : 9223372036854775807
   },
-  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "6F70BAF3-F1D4-444E-9506-44A936CFD50F",
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "6A2A3010-444A-4665-BEF6-610359C35F1E",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
     "F15CF841DD9FB05D4321D52FCD3C55C35136DD79" : "ULRDataVisPrototype\/",
-    "124CCB9B44A9FE82887AA6F64CCD17FE54B342A7" : "..\/..\/addons\/ofxCsv"
+    "124CCB9B44A9FE82887AA6F64CCD17FE54B342A7" : "..\/..\/addons\/ofxCsv",
+    "F4CCB893AFADB97238A965FD2F28717F1CAAE613" : "..\/..\/addons\/ofxSyphon"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "ULRDataVisPrototype",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,
@@ -25,6 +27,11 @@
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/snosenzo\/ULRDataVisPrototype.git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
       "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F15CF841DD9FB05D4321D52FCD3C55C35136DD79"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/astellato\/ofxSyphon.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "F4CCB893AFADB97238A965FD2F28717F1CAAE613"
     }
   ]
 }

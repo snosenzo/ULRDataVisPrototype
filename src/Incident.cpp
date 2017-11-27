@@ -14,20 +14,18 @@ Incident::Incident() {
 void Incident::setup(float xloc, float yloc) {
     x = xloc;
     y = yloc;
-    life = 500;
     radius = 3;
     alpha = 255;
 }
 
 bool Incident::readyToDie() {
-    if(life < 0) {
+    if(alpha <= 0) {
         return true;
     }
     return false;
 }
 
 void Incident::update() {
-    life -= lifeDec;
     radius += radInc;
     alpha -= alphaDec;
     
