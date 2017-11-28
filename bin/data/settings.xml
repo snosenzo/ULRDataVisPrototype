@@ -1,6 +1,8 @@
 <group>
-	<alphaDec>9.5545</alphaDec>
+	<alphaDec>0.3475</alphaDec>
 	<rad_inc>0.5</rad_inc>
 	<cadence>10</cadence>
 	<lifeDec>1</lifeDec>
+<group/>
+	<num_samples>10</num_samples>
 </group>

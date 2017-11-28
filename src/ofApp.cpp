@@ -39,12 +39,31 @@ void ofApp::setup(){
     gui.add(alphaDec.set("alphaDec", 0.1, 0.1, 1));
     gui.add(radInc.set("rad inc", 1.0, 0.1, 5.0));
     gui.add(cadence.set("cadence", 10, 1, 100));
+    gui.add(numSamples.set("num samples", 10, 1, 100));
     gui.setPosition(10,10);
     gui.loadFromFile("settings.xml");
     
     
     syphon.setName("lawfirm_output");
     fbo.allocate(ofGetWidth(), ofGetHeight());
+    
+    float pixperinch = 1920/(30*12);
+    
+    float pitch = pixperinch * 2;
+    
+    int numWide = (int)ofGetWidth()/pitch;
+    int numHigh = (int)ofGetHeight()/pitch;
+    
+    for(int x = 0; x < numWide; x++){
+        for(int y = 0; y < numHigh; y++){
+            LightPoint lp;
+            lp.setup(ofVec2f(x*pitch, y*pitch));
+            lights.push_back(lp);
+        }
+    }
+    
+    
+    
     
     
 }
@@ -54,8 +73,8 @@ void ofApp::update(){
     
     if(ofGetFrameNum() % cadence == 0) {
         
-        float x = ofMap(csv[incidentIndex].getFloat(csv[incidentIndex].size() - 2), min_x, max_x, 0, ofGetWindowWidth());
-        float y = ofMap(csv[incidentIndex].getFloat(csv[incidentIndex].size() - 1), min_y, max_y, 0, ofGetWindowHeight());
+        float x = ofMap(csv[incidentIndex].getFloat(csv[incidentIndex].size() - 2), min_x, max_x, 0, ofGetWidth());
+        float y = ofMap(csv[incidentIndex].getFloat(csv[incidentIndex].size() - 1), min_y, max_y, 0, ofGetHeight());
         if(x < ofGetWindowWidth() && x > 0 && y < ofGetWindowHeight() && y > 0) {
             Incident temp;
             temp.setup(x, y);
@@ -75,12 +94,6 @@ void ofApp::update(){
         i.lifeDec = lifeDec;
         i.update();
     }
-}
-
-//--------------------------------------------------------------
-void ofApp::draw(){
-    ofSetBackgroundColor(0, 0, 0);
-    ofSetColor(255);
     
     fbo.begin();
     ofClear(0,0,0,0);
@@ -90,10 +103,31 @@ void ofApp::draw(){
     }
     
     fbo.end();
-    syphon.publishTexture(&fbo.getTexture());
+//    syphon.publishTexture(&fbo.getTexture());
     
-    ofSetColor(255,255);
+    ofSetColor(255,255,255,255);
     fbo.draw(0,0);
+    
+    ofPixels samplePix;
+    fbo.readToPixels(samplePix);
+    
+    for(auto& lp : lights){
+        
+        lp.setAvgSamplingSize(numSamples);
+        lp.setCurrentVal(samplePix.getColor(lp.getLoc().x, lp.getLoc().y).getBrightness());
+        
+    }
+}
+
+//--------------------------------------------------------------
+void ofApp::draw(){
+    ofSetBackgroundColor(0, 0, 0);
+    ofSetColor(255);
+    
+    for(auto& lp: lights){
+        lp.draw();
+    }
+    syphon.publishScreen();
     
     gui.draw();
     

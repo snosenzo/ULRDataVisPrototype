@@ -5,6 +5,7 @@
 #include "ofxCsv.h"
 #include "ofxGui.h"
 #include "ofxSyphon.h"
+#include "lightPoint.h"
 
 class ofApp : public ofBaseApp{
 
@@ -40,9 +41,12 @@ class ofApp : public ofBaseApp{
     ofParameter<float> radInc;
     ofParameter<int> cadence;
     ofParameter<float> lifeDec;
+    ofParameter<int> numSamples;
+    ofParameter<bool> bShowAnim;
     
     ofxSyphonServer syphon;
     ofFbo fbo;
+    vector<LightPoint> lights;
     
 		
 };
