@@ -23,6 +23,7 @@ public:
     void setCurrentVal(int _val);
     uint8_t getAvgVal();
     ofVec2f getLoc() { return loc; }
+    void setPixelRad(float _rad) { rad = _rad; };
     
     void draw();
     
@@ -37,6 +38,7 @@ protected:
     ofVec3f loc;
     uint8_t avgVal;
     int currentVal;
+    float rad;
 };
 
 #endif /* defined(__CLP_Knoxville_Wall__lightPoint__) */

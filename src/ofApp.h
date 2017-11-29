@@ -13,6 +13,7 @@ class ofApp : public ofBaseApp{
 		void setup();
 		void update();
 		void draw();
+    void resetPitch();
 
 		void keyPressed(int key);
 		void keyReleased(int key);
@@ -43,10 +44,21 @@ class ofApp : public ofBaseApp{
     ofParameter<float> lifeDec;
     ofParameter<int> numSamples;
     ofParameter<bool> bShowAnim;
+    ofParameter<float> pixelRad;
+    ofParameter<float> pitch;
     
     ofxSyphonServer syphon;
     ofFbo fbo;
     vector<LightPoint> lights;
+    
+    ofImage facade_back;
+    ofImage facade_screen;
+    ofVec2f topLeft;
+    ofVec2f bottomRight;
+    float sw;
+    float sh;
+    float pixPerInch;
+    float lastPitch;
     
 		
 };

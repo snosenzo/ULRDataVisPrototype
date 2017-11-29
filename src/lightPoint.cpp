@@ -17,6 +17,7 @@ void LightPoint::setup(ofVec2f _loc){
     start = 0;
     samples.push_back(start);
     currentVal = 0;
+    rad = 2.0;
 }
 
 
@@ -65,7 +66,7 @@ void LightPoint::draw(){
 //    ofLog() << "draw: " << currentVal;
     ofFill();
     ofSetColor(getAvgVal());
-    ofDrawSphere(loc, 2.0);
+    ofDrawSphere(loc, rad);
     
 
 }
