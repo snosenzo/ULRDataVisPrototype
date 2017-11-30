@@ -6,6 +6,8 @@
 #include "ofxGui.h"
 #include "ofxSyphon.h"
 #include "lightPoint.h"
+#include "ofxTime.h"
+#include "Poco/DateTimeParser.h"
 
 class ofApp : public ofBaseApp{
 
@@ -30,6 +32,10 @@ class ofApp : public ofBaseApp{
     float min_x;
     float min_y;
     deque<Incident> incidents;
+    map<string, deque<Incident>> incidentMap;
+    map<string, deque<Incident>>::iterator it;
+    Poco::DateTime currentTime;
+    
     
     ofxPanel gui;
     ofParameter<float> alphaDec;

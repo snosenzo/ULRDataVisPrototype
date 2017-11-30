@@ -21,6 +21,7 @@ void ofApp::setup(){
     max_y = -100000;
     max_x = -100000;
     for(auto row: csv) {
+        
         float x = row.getFloat(row.size() - 2);
         float y = row.getFloat(row.size() - 1);
         ofLog() << x << "|" << y;
@@ -29,6 +30,8 @@ void ofApp::setup(){
         if(x < min_x && x!=0) min_x = x;
         if(y < min_y && y!=0) min_y = y;
     }
+    
+   
     
     facade_back.load("facade_no_screen.png");
     facade_screen.load("facade_screen.png");
@@ -58,6 +61,24 @@ void ofApp::setup(){
     
     fbo.allocate(sw, sh);
     
+    
+    for(auto row: csv) {
+        float x = ofMap(row.getFloat(row.size() - 2), min_x, max_x, 0, sw);
+        float y = ofMap(row.getFloat(row.size() - 1), min_y, max_y, 0, sh);
+        if(x < ofGetWindowWidth() && x > 0 && y < ofGetWindowHeight() && y > 0) {
+            Incident temp;
+            temp.setup(x, y);
+            incidentMap[row.getString(4)].push_front(temp);;
+        }
+    }
+    it = incidentMap.begin();
+    int zero = 0;
+    try {
+        currentTime = Poco::DateTimeParser::parse(it->first, zero);
+        ofLog() << "Succeeded: " << ofxTime::Utils::format(currentTime);
+    } catch(const Poco::SyntaxException& exc) {
+        ofLogError() << "Syntax Exception: \n" << exc.displayText();
+    }
 }
 
 //--------------------------------------------------------------
@@ -65,19 +86,29 @@ void ofApp::update(){
     
     if(lastPitch != pitch) resetPitch();
     
-    if(ofGetFrameNum() % cadence == 0) {
-        
-        float x = ofMap(csv[incidentIndex].getFloat(csv[incidentIndex].size() - 2), min_x, max_x, 0, sw);
-        float y = ofMap(csv[incidentIndex].getFloat(csv[incidentIndex].size() - 1), min_y, max_y, 0, sh);
-        if(x < ofGetWindowWidth() && x > 0 && y < ofGetWindowHeight() && y > 0) {
-            Incident temp;
-            temp.setup(x, y);
-            incidents.push_front(temp);
-            //            incidentIndex++;
-            
-        }
-        incidentIndex++;
+
+    Poco::DateTime nextDateTime;
+    try {
+        int zero = 0;
+        // Reads next DateTime from iterator
+        nextDateTime = Poco::DateTimeParser::parse(it->first, zero);
+//            ofLog() << "Succeeded: " << ofxTime::Utils::format(nextDateTime);
+//            ofLog() <<  ofxTime::Utils::format(currentTime);
+    } catch(const Poco::SyntaxException& exc) {
+        ofLogError() << "Syntax Exception: \n" << exc.displayText();
     }
+    if(currentTime == nextDateTime) {
+        deque<Incident> deq = it->second;
+        for(int i = 0; i < deq.size(); i++) {
+            Incident inc = (Incident) deq.front();
+            deq.pop_front();
+            incidents.push_front(inc);
+            ofLog() << it->first;
+        }
+        it++;
+    }
+    //Increment the minutes - 60 does 1 minute for some reason
+    currentTime = ofxTime::Utils::addMinutes(currentTime, 60);
 
     if(incidents.size() > 0 && incidents[incidents.size() - 1].readyToDie()) incidents.pop_back();
     
