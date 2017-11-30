@@ -65,6 +65,7 @@ void LightPoint::draw(){
     
 //    ofLog() << "draw: " << currentVal;
     ofFill();
+    //ofSetLineWidth(8);
     ofSetColor(getAvgVal());
     ofDrawSphere(loc, rad);
     

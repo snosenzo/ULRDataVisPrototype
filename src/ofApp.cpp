@@ -7,11 +7,6 @@ void ofApp::setup(){
     ofSetCircleResolution(100);
     
     if(csv.load("policedata.csv")) {
-        //csv.trim(); // Trim leading/trailing whitespace from non-quoted fields.
-        
-        // Like with C++ vectors, the index operator is a quick way to grab row
-        // & col data, however this will cause a crash if the row or col doesn't
-        // exist, ie. the file didn't load.
         ofLog() << "Print out a specific CSV value";
         ofLog() << csv[0][1];
         // also you can write...
@@ -35,21 +30,23 @@ void ofApp::setup(){
         if(y < min_y && y!=0) min_y = y;
     }
     
+    facade_back.load("facade_no_screen.png");
+    facade_screen.load("facade_screen.png");
+    
+    facade_back.resize(facade_back.getWidth()*0.75, facade_back.getHeight()*0.75);
+    facade_screen.resize(facade_screen.getWidth()*0.75, facade_screen.getHeight()*0.75);
+    
     gui.setup("gui", "settings.xml");
-    gui.add(alphaDec.set("alphaDec", 0.1, 0.1, 1));
-    gui.add(radInc.set("rad inc", 1.0, 0.1, 5.0));
-    gui.add(cadence.set("cadence", 10, 1, 100));
+    gui.add(alphaDec.set("alphaDec", 0.1, 0.1, 2.0));
+    gui.add(radInc.set("rad inc", 1.0, 0.1, 2.0));
+    gui.add(cadence.set("cadence", 10, 1, 500));
     gui.add(numSamples.set("num samples", 10, 1, 100));
     gui.add(pixelRad.set("pixel radius", 1, 0.0, 3.0));
     gui.add(pitch.set("pitch", 6.0, 1.0, 12.0));
-    gui.setPosition(10,10);
+    gui.setPosition(facade_back.getWidth() + 10,10);
     gui.loadFromFile("settings.xml");
     
-    
     syphon.setName("lawfirm_output");
-    
-    
-    
     
     topLeft.set(325, 50);
     bottomRight.set(820, 330);
@@ -57,17 +54,7 @@ void ofApp::setup(){
     sw = bottomRight.x - topLeft.x;
     sh = bottomRight.y - topLeft.y;
     pixPerInch = sw/(30*12);
-    
-    
     resetPitch();
-    
-    
-    facade_back.load("facade_no_screen.png");
-    facade_screen.load("facade_screen.png");
-    
-    facade_back.resize(facade_back.getWidth()*0.75, facade_back.getHeight()*0.75);
-    facade_screen.resize(facade_screen.getWidth()*0.75, facade_screen.getHeight()*0.75);
-    
     
     fbo.allocate(sw, sh);
     
@@ -104,40 +91,29 @@ void ofApp::update(){
     
     fbo.begin();
     ofClear(0,0,0,0);
-    
     for(auto& i: incidents) {
         i.display();
     }
-    
     fbo.end();
     
     ofSetColor(255,255,255,255);
-    
     ofPixels samplePix;
     fbo.readToPixels(samplePix);
-    
     for(auto& lp : lights){
-        
         lp.setAvgSamplingSize(numSamples);
         lp.setCurrentVal(samplePix.getColor(lp.getLoc().x, lp.getLoc().y).getBrightness());
         lp.setPixelRad(pixelRad*pixPerInch);
-        
     }
-    
     lastPitch = pitch;
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
     ofSetBackgroundColor(0, 0, 0);
-    ofSetColor(255,255,255,255);
     
-    
+    ofSetColor(200,200,200,255);
     facade_back.draw(0,0);
-//        for(auto& i: incidents) {
-//            i.display();
-//        }
-    
+
     ofPushMatrix();
     ofTranslate(topLeft.x, topLeft.y);
     for(auto& lp: lights){
@@ -145,21 +121,20 @@ void ofApp::draw(){
     }
     ofPopMatrix();
     
-    ofSetColor(255,255,255,255);
+    ofSetColor(200,200,200,255);
     facade_screen.draw(0,0);
     
-//    syphon.publishScreen();
+    syphon.publishScreen();
     
     string loc = ofToString(ofGetMouseX());
     loc += ",";
     loc += ofToString(ofGetMouseY());
-    
     ofDrawBitmapStringHighlight(loc,ofGetMouseX(), ofGetMouseY());
-    
     gui.draw();
     
 }
 
+//--------------------------------------------------------------
 void ofApp::resetPitch(){
     lights.clear();
     float screenpitch = pixPerInch * pitch;
@@ -182,11 +157,6 @@ void ofApp::resetPitch(){
 }
 
 //--------------------------------------------------------------
-void ofApp::keyPressed(int key){
-
-}
-
-//--------------------------------------------------------------
 void ofApp::keyReleased(int key){
 
 }
@@ -197,41 +167,7 @@ void ofApp::mouseMoved(int x, int y ){
 }
 
 //--------------------------------------------------------------
-void ofApp::mouseDragged(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mousePressed(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseReleased(int x, int y, int button){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseEntered(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::mouseExited(int x, int y){
-
-}
-
-//--------------------------------------------------------------
-void ofApp::windowResized(int w, int h){
-
-}
-
-//--------------------------------------------------------------
 void ofApp::gotMessage(ofMessage msg){
 
 }
 
-//--------------------------------------------------------------
-void ofApp::dragEvent(ofDragInfo dragInfo){ 
-
-}
