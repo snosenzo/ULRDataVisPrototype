@@ -30,9 +30,7 @@ void ofApp::setup(){
         if(x < min_x && x!=0) min_x = x;
         if(y < min_y && y!=0) min_y = y;
     }
-    
-   
-    
+
     facade_back.load("facade_no_screen.png");
     facade_screen.load("facade_screen.png");
     
@@ -46,6 +44,7 @@ void ofApp::setup(){
     gui.add(numSamples.set("num samples", 10, 1, 100));
     gui.add(pixelRad.set("pixel radius", 1, 0.0, 3.0));
     gui.add(pitch.set("pitch", 6.0, 1.0, 12.0));
+    gui.add(bShowAnim.set("show animation", true));
     gui.setPosition(facade_back.getWidth() + 10,10);
     gui.loadFromFile("settings.xml");
     
@@ -61,16 +60,43 @@ void ofApp::setup(){
     
     fbo.allocate(sw, sh);
     
+    string alleghenyOhioFilename = "AlleghenyOhio.json";
+    string monFilename = "Mon.json";
+    
+    bool success = allOhioJson.open(alleghenyOhioFilename);
+    success = success && monJson.open(monFilename);
+    
+    if(success) {
+        for(int i = 0; i < allOhioJson["points"].size(); i++) {
+            float x = ofMap(allOhioJson["points"][i][0].asFloat(), min_x, max_x, 0, sw);
+            float y = ofMap(allOhioJson["points"][i][1].asFloat(), min_y, max_y, sh, 0);
+            if(x < ofGetWindowWidth() && x > 0 && y < ofGetWindowHeight() && y > 0) {
+                alleghenyOhioLine.addVertex(x,y);
+            }
+        }
+        
+        for(int i = 0; i < monJson["points"].size(); i++) {
+            float x = ofMap(monJson["points"][i][0].asFloat(), min_x, max_x, 0, sw);
+            float y = ofMap(monJson["points"][i][1].asFloat(), min_y, max_y, sh, 0);
+            if(x < ofGetWindowWidth() && x > 0 && y < ofGetWindowHeight() && y > 0) {
+                monLine.addVertex(x, y);
+            }
+            
+        }
+    } else {
+        ofLogError() << "failed to read Json";
+    }
     
     for(auto row: csv) {
         float x = ofMap(row.getFloat(row.size() - 2), min_x, max_x, 0, sw);
-        float y = ofMap(row.getFloat(row.size() - 1), min_y, max_y, 0, sh);
+        float y = ofMap(row.getFloat(row.size() - 1), min_y, max_y, sh, 0);
         if(x < ofGetWindowWidth() && x > 0 && y < ofGetWindowHeight() && y > 0) {
             Incident temp;
             temp.setup(x, y);
             incidentMap[row.getString(4)].push_front(temp);;
         }
     }
+    
     it = incidentMap.begin();
     int zero = 0;
     try {
@@ -125,6 +151,10 @@ void ofApp::update(){
     for(auto& i: incidents) {
         i.display();
     }
+    ofSetColor(255, 0, 0);
+    ofSetLineWidth(2);
+    alleghenyOhioLine.draw();
+    monLine.draw();
     fbo.end();
     
     ofSetColor(255,255,255,255);
@@ -147,6 +177,7 @@ void ofApp::draw(){
 
     ofPushMatrix();
     ofTranslate(topLeft.x, topLeft.y);
+    
     for(auto& lp: lights){
         lp.draw();
     }
@@ -154,7 +185,7 @@ void ofApp::draw(){
     
     ofSetColor(200,200,200,255);
     facade_screen.draw(0,0);
-    
+    if(bShowAnim) fbo.draw(topLeft.x, topLeft.y);
     syphon.publishScreen();
     
     string loc = ofToString(ofGetMouseX());

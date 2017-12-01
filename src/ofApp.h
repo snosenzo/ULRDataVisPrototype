@@ -7,7 +7,8 @@
 #include "ofxSyphon.h"
 #include "lightPoint.h"
 #include "ofxTime.h"
-#include "Poco/DateTimeParser.h"
+#include "ofxJSON.h"
+
 
 class ofApp : public ofBaseApp{
 
@@ -46,10 +47,13 @@ class ofApp : public ofBaseApp{
     ofParameter<bool> bShowAnim;
     ofParameter<float> pixelRad;
     ofParameter<float> pitch;
-    
+    ofPolyline alleghenyOhioLine;
+    ofPolyline monLine;
     ofxSyphonServer syphon;
     ofFbo fbo;
     vector<LightPoint> lights;
+    ofxJSONElement allOhioJson;
+    ofxJSONElement monJson;
     
     ofImage facade_back;
     ofImage facade_screen;
