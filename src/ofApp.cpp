@@ -69,7 +69,7 @@ void ofApp::setup(){
     if(success) {
         for(int i = 0; i < allOhioJson["points"].size(); i++) {
             float x = ofMap(allOhioJson["points"][i][0].asFloat(), min_x, max_x, 0, sw);
-            float y = ofMap(allOhioJson["points"][i][1].asFloat(), min_y, max_y, sh, 0);
+            float y = ofMap(allOhioJson["points"][i][1].asFloat(), min_y, max_y, sw, 0);
             if(x < ofGetWindowWidth() && x > 0 && y < ofGetWindowHeight() && y > 0) {
                 alleghenyOhioLine.addVertex(x,y);
             }
@@ -77,7 +77,7 @@ void ofApp::setup(){
         
         for(int i = 0; i < monJson["points"].size(); i++) {
             float x = ofMap(monJson["points"][i][0].asFloat(), min_x, max_x, 0, sw);
-            float y = ofMap(monJson["points"][i][1].asFloat(), min_y, max_y, sh, 0);
+            float y = ofMap(monJson["points"][i][1].asFloat(), min_y, max_y, sw, 0);
             if(x < ofGetWindowWidth() && x > 0 && y < ofGetWindowHeight() && y > 0) {
                 monLine.addVertex(x, y);
             }
@@ -89,7 +89,7 @@ void ofApp::setup(){
     
     for(auto row: csv) {
         float x = ofMap(row.getFloat(row.size() - 2), min_x, max_x, 0, sw);
-        float y = ofMap(row.getFloat(row.size() - 1), min_y, max_y, sh, 0);
+        float y = ofMap(row.getFloat(row.size() - 1), min_y, max_y, sw, 0);
         if(x < ofGetWindowWidth() && x > 0 && y < ofGetWindowHeight() && y > 0) {
             Incident temp;
             temp.setup(x, y);
@@ -147,14 +147,19 @@ void ofApp::update(){
     }
     
     fbo.begin();
-    ofClear(0,0,0,0);
-    for(auto& i: incidents) {
-        i.display();
-    }
-    ofSetColor(255, 0, 0);
-    ofSetLineWidth(2);
-    alleghenyOhioLine.draw();
-    monLine.draw();
+        ofClear(0,0,0,0);
+        ofPushMatrix();
+        ofTranslate(0,-100);
+
+            for(auto& i: incidents) {
+                i.display();
+            }
+        
+            ofSetColor(100);
+            ofSetLineWidth(15);
+            alleghenyOhioLine.draw();
+            monLine.draw();
+        ofPopMatrix();
     fbo.end();
     
     ofSetColor(255,255,255,255);
