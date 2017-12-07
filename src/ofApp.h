@@ -8,6 +8,10 @@
 #include "lightPoint.h"
 #include "ofxTime.h"
 #include "ofxJSON.h"
+#include "ofxRipples.h"
+#include "ofxBounce.h"
+
+
 
 
 class ofApp : public ofBaseApp{
@@ -47,6 +51,7 @@ class ofApp : public ofBaseApp{
     ofParameter<bool> bShowAnim;
     ofParameter<float> pixelRad;
     ofParameter<float> pitch;
+    ofParameter<float> damping;
     ofPolyline alleghenyOhioLine;
     ofPolyline monLine;
     ofxSyphonServer syphon;
@@ -64,5 +69,8 @@ class ofApp : public ofBaseApp{
     float pixPerInch;
     float lastPitch;
     
+    
+    ofxRipples  rip;
+    ofxBounce   bounce;
 		
 };

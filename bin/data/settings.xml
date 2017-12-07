@@ -1,11 +1,12 @@
 <group>
-	<alphaDec>2</alphaDec>
-	<rad_inc>0.5465</rad_inc>
-	<cadence>282</cadence>
+	<alphaDec>12.1395</alphaDec>
+	<rad_inc>2.55</rad_inc>
+	<cadence>15</cadence>
 	<lifeDec>1</lifeDec>
 <group/>
-	<num_samples>49</num_samples>
-<pixel_radius>0.885</pixel_radius>
-<pitch>3.53</pitch>
+	<num_samples>2</num_samples>
+<pixel_radius>1.47</pixel_radius>
+<pitch>4.08</pitch>
 <show_animation>0</show_animation>
+<damping>1.266</damping>
 </group>

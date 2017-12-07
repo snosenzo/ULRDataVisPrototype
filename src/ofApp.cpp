@@ -5,6 +5,7 @@ void ofApp::setup(){
     
     ofSetLogLevel("ofxCsv", OF_LOG_VERBOSE);
     ofSetCircleResolution(100);
+    ofEnableAlphaBlending();
     
     if(csv.load("policedata.csv")) {
         ofLog() << "Print out a specific CSV value";
@@ -38,12 +39,13 @@ void ofApp::setup(){
     facade_screen.resize(facade_screen.getWidth()*0.75, facade_screen.getHeight()*0.75);
     
     gui.setup("gui", "settings.xml");
-    gui.add(alphaDec.set("alphaDec", 0.1, 0.1, 2.0));
-    gui.add(radInc.set("rad inc", 1.0, 0.1, 2.0));
+    gui.add(alphaDec.set("alphaDec", 0.1, 0.1, 20.0));
+    gui.add(radInc.set("rad inc", 1.0, 0.1, 5.0));
     gui.add(cadence.set("cadence", 10, 1, 500));
     gui.add(numSamples.set("num samples", 10, 1, 100));
     gui.add(pixelRad.set("pixel radius", 1, 0.0, 3.0));
     gui.add(pitch.set("pitch", 6.0, 1.0, 12.0));
+    gui.add(damping.set("damping", 1.255, 1.15, 1.35));
     gui.add(bShowAnim.set("show animation", true));
     gui.setPosition(facade_back.getWidth() + 10,10);
     gui.loadFromFile("settings.xml");
@@ -59,6 +61,8 @@ void ofApp::setup(){
     resetPitch();
     
     fbo.allocate(sw, sh);
+    rip.allocate(640,480);
+    bounce.allocate(640,480);
     
     string alleghenyOhioFilename = "AlleghenyOhio.json";
     string monFilename = "Mon.json";
@@ -113,6 +117,7 @@ void ofApp::update(){
     if(lastPitch != pitch) resetPitch();
     
 
+    
     Poco::DateTime nextDateTime;
     try {
         int zero = 0;
@@ -155,16 +160,25 @@ void ofApp::update(){
                 i.display();
             }
         
-            ofSetColor(100);
+            ofSetColor(200);
             ofSetLineWidth(15);
             alleghenyOhioLine.draw();
             monLine.draw();
         ofPopMatrix();
     fbo.end();
     
+    rip.begin();
+    ofFill();
+    ofSetColor(ofNoise( ofGetFrameNum() ) * 255 * 5, 255);
+    fbo.draw(0,0);
+    rip.end();
+    rip.damping = damping;
+    rip.update();
+    
+    
     ofSetColor(255,255,255,255);
     ofPixels samplePix;
-    fbo.readToPixels(samplePix);
+    rip.getTexture().readToPixels(samplePix);
     for(auto& lp : lights){
         lp.setAvgSamplingSize(numSamples);
         lp.setCurrentVal(samplePix.getColor(lp.getLoc().x, lp.getLoc().y).getBrightness());
@@ -190,7 +204,7 @@ void ofApp::draw(){
     
     ofSetColor(200,200,200,255);
     facade_screen.draw(0,0);
-    if(bShowAnim) fbo.draw(topLeft.x, topLeft.y);
+    if(bShowAnim) rip.draw(topLeft.x, topLeft.y);
     syphon.publishScreen();
     
     string loc = ofToString(ofGetMouseX());
@@ -225,7 +239,13 @@ void ofApp::resetPitch(){
 
 //--------------------------------------------------------------
 void ofApp::keyReleased(int key){
-
+    if (key == OF_KEY_UP){
+        rip.damping += 0.01;
+    } else if ( key == OF_KEY_DOWN){
+        rip.damping -= 0.01;
+    }
+    
+    ofLog() << rip.damping;
 }
 
 //--------------------------------------------------------------
