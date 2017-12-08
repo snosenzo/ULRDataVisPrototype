@@ -45,7 +45,7 @@ void ofApp::setup(){
     gui.add(numSamples.set("num samples", 10, 1, 100));
     gui.add(pixelRad.set("pixel radius", 1, 0.0, 3.0));
     gui.add(pitch.set("pitch", 6.0, 1.0, 12.0));
-    gui.add(damping.set("damping", 1.255, 1.15, 1.35));
+    gui.add(damping.set("damping", 1.255, 1.2, 1.28));
     gui.add(bShowAnim.set("show animation", true));
     gui.setPosition(facade_back.getWidth() + 10,10);
     gui.loadFromFile("settings.xml");
